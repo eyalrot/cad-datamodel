@@ -1,0 +1,69 @@
+[build-system]
+requires = ["hatchling==1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cad-datamodel"
+version = "0.1.0"
+description = "A comprehensive data model for CAD drawing applications"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "CAD Datamodel Contributors"},
+]
+keywords = ["cad", "drawing", "geometry", "svg", "datamodel"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Multimedia :: Graphics :: Graphics Conversion",
+    "Typing :: Typed",
+]
+
+dependencies = [
+    "numpy==1.26.0",
+    "shapely==2.0.5",
+    "lxml==5.3.0",
+    "pydantic==2.8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.0",
+    "pytest-cov==5.0.0",
+    "pytest-benchmark==4.0.0",
+    "mypy==1.11.0",
+    "ruff==0.5.0",
+    "sphinx==7.4.0",
+    "sphinx-rtd-theme==2.0.0",
+    "pre-commit==3.7.1",
+    "tox==4.15.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/cad-datamodel/cad-datamodel"
+Documentation = "https://cad-datamodel.readthedocs.io"
+Repository = "https://github.com/cad-datamodel/cad-datamodel"
+Issues = "https://github.com/cad-datamodel/cad-datamodel/issues"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/docs",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "pyproject.toml",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cad_datamodel"]

@@ -1,0 +1,87 @@
+"""Core module containing base classes and interfaces."""
+
+from .base import IRenderer, ISerializer, IShape
+from .constants import (
+    COORDINATE_PRECISION,
+    DEFAULT_CANVAS_HEIGHT,
+    DEFAULT_CANVAS_WIDTH,
+    DEFAULT_FILL_COLOR,
+    DEFAULT_FILL_OPACITY,
+    DEFAULT_LINE_CAP,
+    DEFAULT_LINE_JOIN,
+    DEFAULT_STROKE_COLOR,
+    DEFAULT_STROKE_OPACITY,
+    DEFAULT_STROKE_WIDTH,
+    IDENTITY_TRANSFORM,
+    MAX_COORDINATE,
+    MIN_COORDINATE,
+    NAMED_COLORS,
+)
+from .exceptions import (
+    CADError,
+    DocumentError,
+    GeometryError,
+    GroupError,
+    LayerError,
+    ReferenceError,
+    SerializationError,
+    ShapeValidationError,
+    TransformError,
+)
+from .types import (
+    Angle,
+    Bounds,
+    Color,
+    Coordinate,
+    LineCap,
+    LineJoin,
+    Opacity,
+    Point,
+    ShapeType,
+    Transform,
+    Units,
+)
+
+__all__ = [
+    # Base interfaces
+    "IShape",
+    "IRenderer",
+    "ISerializer",
+    # Types
+    "ShapeType",
+    "LineCap",
+    "LineJoin",
+    "Units",
+    "Coordinate",
+    "Angle",
+    "Opacity",
+    "Point",
+    "Bounds",
+    "Color",
+    "Transform",
+    # Exceptions
+    "CADError",
+    "ShapeValidationError",
+    "LayerError",
+    "TransformError",
+    "SerializationError",
+    "GroupError",
+    "DocumentError",
+    "ReferenceError",
+    "GeometryError",
+    # Constants
+    "DEFAULT_STROKE_WIDTH",
+    "DEFAULT_STROKE_COLOR",
+    "DEFAULT_FILL_COLOR",
+    "DEFAULT_STROKE_OPACITY",
+    "DEFAULT_FILL_OPACITY",
+    "DEFAULT_LINE_CAP",
+    "DEFAULT_LINE_JOIN",
+    "MIN_COORDINATE",
+    "MAX_COORDINATE",
+    "COORDINATE_PRECISION",
+    "DEFAULT_CANVAS_WIDTH",
+    "DEFAULT_CANVAS_HEIGHT",
+    "NAMED_COLORS",
+    "IDENTITY_TRANSFORM",
+]

@@ -1,0 +1,2 @@
+I want to create fastpai server to handle math services , will start with finbaonchi api which will return the N element in fibonachi series\                                                                   │
+│   first phase will implement it in python , second phase will be implement it in c++
