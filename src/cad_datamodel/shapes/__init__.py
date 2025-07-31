@@ -1,3 +1,16 @@
-"""Shape implementations for CAD drawings."""
+"""Shapes module for the CAD datamodel.
 
-__all__: list[str] = []
+This module contains all shape implementations and the shape factory.
+"""
+
+from cad_datamodel.shapes.factory import ShapeFactory
+from cad_datamodel.shapes.rectangle import Rectangle
+from cad_datamodel.shapes.shape import IShape, Shape, Style
+
+__all__ = [
+    "IShape",
+    "Shape",
+    "Style",
+    "Rectangle",
+    "ShapeFactory",
+]

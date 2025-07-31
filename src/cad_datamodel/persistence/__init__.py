@@ -1,3 +1,5 @@
 """Serialization and deserialization to various formats."""
 
-__all__: list[str] = []
+from cad_datamodel.persistence.svg import SVGExporter
+
+__all__ = ["SVGExporter"]
