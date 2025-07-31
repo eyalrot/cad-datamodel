@@ -48,6 +48,12 @@ dev = [
     "tox==4.15.1",
 ]
 
+docs = [
+    "sphinx==7.4.0",
+    "sphinx-rtd-theme==2.0.0",
+    "sphinx-autodoc-typehints==2.2.0",
+]
+
 [project.urls]
 Homepage = "https://github.com/cad-datamodel/cad-datamodel"
 Documentation = "https://cad-datamodel.readthedocs.io"
