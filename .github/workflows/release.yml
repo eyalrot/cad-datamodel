@@ -1,0 +1,64 @@
+name: Release
+
+# This workflow will be activated in a future story
+# Currently serves as a placeholder for the release process
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Trigger on version tags like v1.0.0
+  workflow_dispatch:  # Allow manual triggering
+
+permissions:
+  contents: write
+  id-token: write  # For PyPI trusted publishing
+
+jobs:
+  release:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    if: false  # Disabled until release story is implemented
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+    
+    - name: Build package
+      run: python -m build
+    
+    - name: Verify package
+      run: |
+        twine check dist/*
+    
+    # PyPI publishing will be configured in release story
+    # - name: Publish to PyPI
+    #   uses: pypa/gh-action-pypi-publish@release/v1
+    #   with:
+    #     attestations: true
+    
+    # GitHub release creation will be added in release story
+    # - name: Create GitHub Release
+    #   uses: softprops/action-gh-release@v2
+    #   with:
+    #     files: dist/*
+    #     generate_release_notes: true
+
+# Release Process Documentation:
+# 1. Ensure all tests pass on master/main branch
+# 2. Update version in pyproject.toml and __init__.py
+# 3. Update CHANGELOG.md with release notes
+# 4. Commit version bump: "chore: bump version to X.Y.Z"
+# 5. Create and push tag: git tag -a vX.Y.Z -m "Release version X.Y.Z"
+# 6. Push tag: git push origin vX.Y.Z
+# 7. Workflow will automatically build and publish to PyPI
+# 8. GitHub release will be created with artifacts
