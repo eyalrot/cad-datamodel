@@ -314,11 +314,7 @@ class TestTransform:
     def test_non_invertible_transform(self):
         """Test error for non-invertible transform."""
         # Create singular matrix
-        matrix = np.array([
-            [1, 0, 0],
-            [0, 0, 0],
-            [0, 0, 1]
-        ])
+        matrix = np.array([[1, 0, 0], [0, 0, 0], [0, 0, 1]])
         t = Transform(matrix)
 
         with pytest.raises(ValueError, match="Transform is not invertible"):
@@ -407,7 +403,9 @@ class TestExceptions:
 
     def test_geometry_error(self):
         """Test GeometryError."""
-        err = GeometryError("intersection", "No intersection found", ["shape1", "shape2"])
+        err = GeometryError(
+            "intersection", "No intersection found", ["shape1", "shape2"]
+        )
         assert "intersection" in str(err)
         assert "No intersection found" in str(err)
         assert err.details["shape_ids"] == ["shape1", "shape2"]

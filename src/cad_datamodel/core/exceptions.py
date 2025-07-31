@@ -34,8 +34,9 @@ class ShapeValidationError(CADError):
     or missing required attributes.
     """
 
-    def __init__(self, shape_type: str, validation_error: str,
-                 shape_id: Optional[str] = None):
+    def __init__(
+        self, shape_type: str, validation_error: str, shape_id: Optional[str] = None
+    ):
         """Initialize shape validation error.
 
         Args:
@@ -47,7 +48,7 @@ class ShapeValidationError(CADError):
         details = {
             "shape_type": shape_type,
             "validation_error": validation_error,
-            "shape_id": shape_id
+            "shape_id": shape_id,
         }
         super().__init__(message, details)
 
@@ -59,8 +60,12 @@ class LayerError(CADError):
     or invalid layer operations.
     """
 
-    def __init__(self, operation: str, layer_id: Optional[str] = None,
-                 reason: Optional[str] = None):
+    def __init__(
+        self,
+        operation: str,
+        layer_id: Optional[str] = None,
+        reason: Optional[str] = None,
+    ):
         """Initialize layer error.
 
         Args:
@@ -72,11 +77,7 @@ class LayerError(CADError):
         if reason:
             message += f": {reason}"
 
-        details = {
-            "operation": operation,
-            "layer_id": layer_id,
-            "reason": reason
-        }
+        details = {"operation": operation, "layer_id": layer_id, "reason": reason}
         super().__init__(message, details)
 
 
@@ -95,10 +96,7 @@ class TransformError(CADError):
             error: Specific error message
         """
         message = f"Transform error in {transform_type}: {error}"
-        details = {
-            "transform_type": transform_type,
-            "error": error
-        }
+        details = {"transform_type": transform_type, "error": error}
         super().__init__(message, details)
 
 
@@ -109,8 +107,9 @@ class SerializationError(CADError):
     CAD data to various formats.
     """
 
-    def __init__(self, operation: str, format: str, error: str,
-                 entity_type: Optional[str] = None):
+    def __init__(
+        self, operation: str, format: str, error: str, entity_type: Optional[str] = None
+    ):
         """Initialize serialization error.
 
         Args:
@@ -119,12 +118,14 @@ class SerializationError(CADError):
             error: Specific error message
             entity_type: Optional type of entity being processed
         """
-        message = f"Failed to {operation} {entity_type or 'data'} to/from {format}: {error}"
+        message = (
+            f"Failed to {operation} {entity_type or 'data'} to/from {format}: {error}"
+        )
         details = {
             "operation": operation,
             "format": format,
             "error": error,
-            "entity_type": entity_type
+            "entity_type": entity_type,
         }
         super().__init__(message, details)
 
@@ -145,11 +146,7 @@ class GroupError(CADError):
             reason: Reason for the failure
         """
         message = f"Group operation '{operation}' failed for group {group_id}: {reason}"
-        details = {
-            "group_id": group_id,
-            "operation": operation,
-            "reason": reason
-        }
+        details = {"group_id": group_id, "operation": operation, "reason": reason}
         super().__init__(message, details)
 
 
@@ -160,8 +157,9 @@ class DocumentError(CADError):
     or document structure violations.
     """
 
-    def __init__(self, error_type: str, message: str,
-                 document_id: Optional[str] = None):
+    def __init__(
+        self, error_type: str, message: str, document_id: Optional[str] = None
+    ):
         """Initialize document error.
 
         Args:
@@ -170,10 +168,7 @@ class DocumentError(CADError):
             document_id: Optional document ID
         """
         full_message = f"Document error ({error_type}): {message}"
-        details = {
-            "error_type": error_type,
-            "document_id": document_id
-        }
+        details = {"error_type": error_type, "document_id": document_id}
         super().__init__(full_message, details)
 
 
@@ -184,8 +179,12 @@ class ReferenceError(CADError):
     or invalid ID references.
     """
 
-    def __init__(self, reference_type: str, reference_id: str,
-                 source_entity: Optional[str] = None):
+    def __init__(
+        self,
+        reference_type: str,
+        reference_id: str,
+        source_entity: Optional[str] = None,
+    ):
         """Initialize reference error.
 
         Args:
@@ -200,7 +199,7 @@ class ReferenceError(CADError):
         details = {
             "reference_type": reference_type,
             "reference_id": reference_id,
-            "source_entity": source_entity
+            "source_entity": source_entity,
         }
         super().__init__(message, details)
 
@@ -212,8 +211,9 @@ class GeometryError(CADError):
     or numerical computation failures.
     """
 
-    def __init__(self, operation: str, error: str,
-                 shape_ids: Optional[list[str]] = None):
+    def __init__(
+        self, operation: str, error: str, shape_ids: Optional[list[str]] = None
+    ):
         """Initialize geometry error.
 
         Args:
@@ -222,9 +222,5 @@ class GeometryError(CADError):
             shape_ids: Optional list of shape IDs involved
         """
         message = f"Geometry operation '{operation}' failed: {error}"
-        details = {
-            "operation": operation,
-            "error": error,
-            "shape_ids": shape_ids or []
-        }
+        details = {"operation": operation, "error": error, "shape_ids": shape_ids or []}
         super().__init__(message, details)

@@ -148,8 +148,9 @@ class IRenderer(ABC):
         pass
 
     @abstractmethod
-    def render_document(self, layers: dict[str, list[IShape]],
-                       canvas_width: float, canvas_height: float) -> Any:
+    def render_document(
+        self, layers: dict[str, list[IShape]], canvas_width: float, canvas_height: float
+    ) -> Any:
         """Render an entire document.
 
         Args:

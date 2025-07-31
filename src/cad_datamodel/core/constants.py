@@ -4,7 +4,6 @@ This module contains all constant values, default settings, and
 system-wide limits used throughout the CAD system.
 """
 
-
 from .types import Color, LineCap, LineJoin, Transform
 
 # Default style values
@@ -83,8 +82,8 @@ MAX_UNDO_HISTORY: int = 100
 SPATIAL_INDEX_THRESHOLD: int = 1000  # Use spatial index above this shape count
 
 # Validation constants
-UUID_REGEX: str = r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
-COLOR_HEX_REGEX: str = r'^#?([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$'
+UUID_REGEX: str = r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+COLOR_HEX_REGEX: str = r"^#?([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
 
 # Default metadata keys
 METADATA_CREATED_AT: str = "created_at"

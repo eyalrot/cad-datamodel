@@ -86,7 +86,7 @@ class Bounds(NamedTuple):
         """Calculate the center point of the bounds."""
         return Point(
             (self.min_point.x + self.max_point.x) / 2,
-            (self.min_point.y + self.max_point.y) / 2
+            (self.min_point.y + self.max_point.y) / 2,
         )
 
     def contains_point(self, point: Point) -> bool:
@@ -98,10 +98,12 @@ class Bounds(NamedTuple):
         Returns:
             True if the point is inside the bounds
         """
-        return (self.min_point.x <= point.x <= self.max_point.x and
-                self.min_point.y <= point.y <= self.max_point.y)
+        return (
+            self.min_point.x <= point.x <= self.max_point.x
+            and self.min_point.y <= point.y <= self.max_point.y
+        )
 
-    def intersects(self, other: 'Bounds') -> bool:
+    def intersects(self, other: "Bounds") -> bool:
         """Check if this bounds intersects with another.
 
         Args:
@@ -110,10 +112,12 @@ class Bounds(NamedTuple):
         Returns:
             True if the bounds intersect
         """
-        return not (self.max_point.x < other.min_point.x or
-                   self.min_point.x > other.max_point.x or
-                   self.max_point.y < other.min_point.y or
-                   self.min_point.y > other.max_point.y)
+        return not (
+            self.max_point.x < other.min_point.x
+            or self.min_point.x > other.max_point.x
+            or self.max_point.y < other.min_point.y
+            or self.min_point.y > other.max_point.y
+        )
 
 
 class Color(BaseModel):
@@ -129,7 +133,7 @@ class Color(BaseModel):
     alpha: int = Field(default=255, ge=0, le=255)
 
     @classmethod
-    def from_hex(cls, hex_string: str) -> 'Color':
+    def from_hex(cls, hex_string: str) -> "Color":
         """Create a color from a hex string.
 
         Args:
@@ -138,13 +142,21 @@ class Color(BaseModel):
         Returns:
             Color object
         """
-        hex_string = hex_string.lstrip('#')
+        hex_string = hex_string.lstrip("#")
         if len(hex_string) == 6:
-            r, g, b = int(hex_string[0:2], 16), int(hex_string[2:4], 16), int(hex_string[4:6], 16)
+            r, g, b = (
+                int(hex_string[0:2], 16),
+                int(hex_string[2:4], 16),
+                int(hex_string[4:6], 16),
+            )
             return cls(red=r, green=g, blue=b)
         elif len(hex_string) == 8:
-            r, g, b, a = (int(hex_string[0:2], 16), int(hex_string[2:4], 16),
-                         int(hex_string[4:6], 16), int(hex_string[6:8], 16))
+            r, g, b, a = (
+                int(hex_string[0:2], 16),
+                int(hex_string[2:4], 16),
+                int(hex_string[4:6], 16),
+                int(hex_string[6:8], 16),
+            )
             return cls(red=r, green=g, blue=b, alpha=a)
         else:
             raise ValueError(f"Invalid hex color string: {hex_string}")
@@ -166,7 +178,7 @@ class Color(BaseModel):
         """Convert to RGBA tuple."""
         return (self.red, self.green, self.blue, self.alpha)
 
-    def with_alpha(self, alpha: int) -> 'Color':
+    def with_alpha(self, alpha: int) -> "Color":
         """Create a new color with different alpha value.
 
         Args:
@@ -185,7 +197,9 @@ class Transform:
     Supports translation, rotation, scaling, and arbitrary affine transformations.
     """
 
-    def __init__(self, matrix: Optional[np.ndarray[tuple[int, int], np.dtype[np.float64]]] = None):
+    def __init__(
+        self, matrix: Optional[np.ndarray[tuple[int, int], np.dtype[np.float64]]] = None
+    ):
         """Initialize transform with optional matrix.
 
         Args:
@@ -199,12 +213,12 @@ class Transform:
             self._matrix = matrix.astype(np.float64)
 
     @classmethod
-    def identity(cls) -> 'Transform':
+    def identity(cls) -> "Transform":
         """Create an identity transform."""
         return cls()
 
     @classmethod
-    def translation(cls, dx: float, dy: float) -> 'Transform':
+    def translation(cls, dx: float, dy: float) -> "Transform":
         """Create a translation transform.
 
         Args:
@@ -214,15 +228,11 @@ class Transform:
         Returns:
             New Transform object
         """
-        matrix = np.array([
-            [1, 0, dx],
-            [0, 1, dy],
-            [0, 0, 1]
-        ], dtype=np.float64)
+        matrix = np.array([[1, 0, dx], [0, 1, dy], [0, 0, 1]], dtype=np.float64)
         return cls(matrix)
 
     @classmethod
-    def rotation(cls, angle: float, center: Optional[Point] = None) -> 'Transform':
+    def rotation(cls, angle: float, center: Optional[Point] = None) -> "Transform":
         """Create a rotation transform.
 
         Args:
@@ -237,25 +247,27 @@ class Transform:
         sin_a = np.sin(rad)
 
         if center is None:
-            matrix = np.array([
-                [cos_a, -sin_a, 0],
-                [sin_a, cos_a, 0],
-                [0, 0, 1]
-            ], dtype=np.float64)
+            matrix = np.array(
+                [[cos_a, -sin_a, 0], [sin_a, cos_a, 0], [0, 0, 1]], dtype=np.float64
+            )
         else:
             # Translate to origin, rotate, translate back
             cx, cy = center.x, center.y
-            matrix = np.array([
-                [cos_a, -sin_a, cx - cx * cos_a + cy * sin_a],
-                [sin_a, cos_a, cy - cx * sin_a - cy * cos_a],
-                [0, 0, 1]
-            ], dtype=np.float64)
+            matrix = np.array(
+                [
+                    [cos_a, -sin_a, cx - cx * cos_a + cy * sin_a],
+                    [sin_a, cos_a, cy - cx * sin_a - cy * cos_a],
+                    [0, 0, 1],
+                ],
+                dtype=np.float64,
+            )
 
         return cls(matrix)
 
     @classmethod
-    def scale(cls, sx: float, sy: Optional[float] = None,
-              center: Optional[Point] = None) -> 'Transform':
+    def scale(
+        cls, sx: float, sy: Optional[float] = None, center: Optional[Point] = None
+    ) -> "Transform":
         """Create a scale transform.
 
         Args:
@@ -270,23 +282,18 @@ class Transform:
             sy = sx
 
         if center is None:
-            matrix = np.array([
-                [sx, 0, 0],
-                [0, sy, 0],
-                [0, 0, 1]
-            ], dtype=np.float64)
+            matrix = np.array([[sx, 0, 0], [0, sy, 0], [0, 0, 1]], dtype=np.float64)
         else:
             # Translate to origin, scale, translate back
             cx, cy = center.x, center.y
-            matrix = np.array([
-                [sx, 0, cx * (1 - sx)],
-                [0, sy, cy * (1 - sy)],
-                [0, 0, 1]
-            ], dtype=np.float64)
+            matrix = np.array(
+                [[sx, 0, cx * (1 - sx)], [0, sy, cy * (1 - sy)], [0, 0, 1]],
+                dtype=np.float64,
+            )
 
         return cls(matrix)
 
-    def compose(self, other: 'Transform') -> 'Transform':
+    def compose(self, other: "Transform") -> "Transform":
         """Compose this transform with another.
 
         Args:
@@ -310,7 +317,7 @@ class Transform:
         result = self._matrix @ vec
         return Point(result[0], result[1])
 
-    def inverse(self) -> 'Transform':
+    def inverse(self) -> "Transform":
         """Calculate the inverse transform.
 
         Returns:
