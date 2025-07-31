@@ -1,6 +1,7 @@
 # CAD Drawing Application Data Model
 
 [![CI](https://github.com/eyalrot/cad-datamodel/actions/workflows/ci.yml/badge.svg)](https://github.com/eyalrot/cad-datamodel/actions/workflows/ci.yml)
+[![Coverage: 92%](https://img.shields.io/badge/coverage-92%25-brightgreen.svg)](https://github.com/eyalrot/cad-datamodel/blob/master/COVERAGE.md)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
@@ -141,12 +142,31 @@ open _build/html/index.html  # macOS
 xdg-open _build/html/index.html  # Linux
 ```
 
+## 🧪 Testing
+
+The project maintains high test coverage (92%) with a comprehensive test suite:
+
+```bash
+# Run tests with coverage report
+pytest --cov=src/cad_datamodel --cov-report=term-missing
+
+# Generate HTML coverage report
+pytest --cov=src/cad_datamodel --cov-report=html
+
+# View coverage report
+open htmlcov/index.html  # macOS
+xdg-open htmlcov/index.html  # Linux
+```
+
+See [COVERAGE.md](COVERAGE.md) for detailed coverage information.
+
 ## 📚 Documentation
 
 - [API Reference](https://cad-datamodel.readthedocs.io/) (Coming Soon)
 - [Architecture Overview](docs/architecture.md)
 - [Contributing Guide](CONTRIBUTING.md)
 - [Changelog](CHANGELOG.md)
+- [Coverage Report](COVERAGE.md)
 
 ## 🏗️ Project Structure
 
