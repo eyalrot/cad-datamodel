@@ -9,6 +9,7 @@ from xml.etree import ElementTree as ET
 
 from cad_datamodel.core.constants import SVG_NAMESPACE, SVG_VERSION
 from cad_datamodel.document import Document
+from cad_datamodel.shapes.circle import Circle
 from cad_datamodel.shapes.rectangle import Rectangle
 from cad_datamodel.shapes.shape import Shape
 
@@ -70,6 +71,8 @@ class SVGExporter:
         """
         if isinstance(shape, Rectangle):
             return self._rectangle_to_svg(shape)
+        elif isinstance(shape, Circle):
+            return self._circle_to_svg(shape)
         return None
 
     def _rectangle_to_svg(self, rect: Rectangle) -> ET.Element:
@@ -120,3 +123,46 @@ class SVGExporter:
             attrib["transform"] = transform_str
 
         return ET.Element("rect", attrib)
+
+    def _circle_to_svg(self, circle: Circle) -> ET.Element:
+        """Convert a circle to SVG circle element.
+
+        Args:
+            circle: The circle to convert
+
+        Returns:
+            SVG circle element
+        """
+        attrib = {
+            "cx": str(circle.cx),
+            "cy": str(circle.cy),
+            "r": str(circle.radius),
+        }
+
+        # Apply style
+        style_parts = []
+        if circle.style.fill_color:
+            style_parts.append(f"fill:{circle.style.fill_color}")
+            if circle.style.fill_opacity < 1.0:
+                style_parts.append(f"fill-opacity:{circle.style.fill_opacity}")
+        else:
+            style_parts.append("fill:none")
+
+        if circle.style.stroke_color:
+            style_parts.append(f"stroke:{circle.style.stroke_color}")
+            style_parts.append(f"stroke-width:{circle.style.stroke_width}")
+            if circle.style.stroke_opacity < 1.0:
+                style_parts.append(f"stroke-opacity:{circle.style.stroke_opacity}")
+
+        if style_parts:
+            attrib["style"] = ";".join(style_parts)
+
+        # Apply transform if not identity
+        transform = circle.transform
+        if transform and transform != transform.identity():
+            matrix = transform.matrix
+            # SVG transform format: matrix(a,b,c,d,e,f)
+            transform_str = f"matrix({matrix[0,0]},{matrix[1,0]},{matrix[0,1]},{matrix[1,1]},{matrix[0,2]},{matrix[1,2]})"
+            attrib["transform"] = transform_str
+
+        return ET.Element("circle", attrib)

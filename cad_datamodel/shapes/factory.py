@@ -8,6 +8,7 @@ from typing import Any, ClassVar, Optional
 
 from cad_datamodel.core.exceptions import ShapeValidationError
 from cad_datamodel.core.types import ShapeType
+from cad_datamodel.shapes.circle import Circle
 from cad_datamodel.shapes.rectangle import Rectangle
 from cad_datamodel.shapes.shape import IShape, Shape, Style
 
@@ -22,6 +23,7 @@ class ShapeFactory:
     # Registry of shape types to their corresponding classes
     _shape_registry: ClassVar[dict[ShapeType, type[Shape]]] = {
         ShapeType.RECTANGLE: Rectangle,
+        ShapeType.CIRCLE: Circle,
     }
 
     @classmethod
@@ -116,6 +118,54 @@ class ShapeFactory:
             width=width,
             height=height,
             corner_radius=corner_radius,
+            layer_id=layer_id,
+            group_id=group_id,
+            visible=visible,
+            locked=locked,
+            style=style,
+            transform=transform,
+            metadata=metadata,
+            shape_id=shape_id,
+        )
+
+    @classmethod
+    def create_circle(
+        cls,
+        cx: float,
+        cy: float,
+        radius: float,
+        layer_id: str,
+        *,
+        group_id: Optional[str] = None,
+        visible: bool = True,
+        locked: bool = False,
+        style: Optional[Style] = None,
+        transform: Optional[Any] = None,
+        metadata: Optional[dict[str, Any]] = None,
+        shape_id: Optional[str] = None,
+    ) -> Circle:
+        """Convenience method to create a circle.
+
+        Args:
+            cx: X coordinate of the center point
+            cy: Y coordinate of the center point
+            radius: Radius of the circle
+            layer_id: ID of the layer containing this shape
+            group_id: Optional ID of parent group
+            visible: Whether the shape is visible
+            locked: Whether the shape is locked for editing
+            style: Visual styling information
+            transform: Transformation matrix
+            metadata: Additional user-defined metadata
+            shape_id: Optional explicit ID (auto-generated if not provided)
+
+        Returns:
+            The created Circle instance
+        """
+        return Circle(
+            cx=cx,
+            cy=cy,
+            radius=radius,
             layer_id=layer_id,
             group_id=group_id,
             visible=visible,
