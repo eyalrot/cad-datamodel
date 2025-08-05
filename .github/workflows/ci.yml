@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+env:
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  build-and-test:
+    name: Test Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Build Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        target: ci
+        build-args: |
+          PYTHON_VERSION=${{ matrix.python-version }}
+        tags: cad-datamodel:py${{ matrix.python-version }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        load: true
+        
+    - name: Run linting
+      run: |
+        docker run --rm \
+          -v ${{ github.workspace }}:/app \
+          cad-datamodel:py${{ matrix.python-version }} \
+          python -m ruff check cad_datamodel/ tests/
+          
+    - name: Run type checking
+      run: |
+        docker run --rm \
+          -v ${{ github.workspace }}:/app \
+          cad-datamodel:py${{ matrix.python-version }} \
+          python -m mypy cad_datamodel
+          
+    - name: Run tests with coverage
+      run: |
+        docker run --rm \
+          -v ${{ github.workspace }}:/app \
+          -e PYTHONPATH=/app \
+          cad-datamodel:py${{ matrix.python-version }} \
+          python -m pytest tests/ -v --cov=cad_datamodel --cov-report=term-missing --cov-report=xml --cov-report=html
+          
+    - name: Upload coverage reports
+      if: matrix.python-version == '3.12'
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: |
+          coverage.xml
+          htmlcov/
+          
+    - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.12'
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-py${{ matrix.python-version }}
+        fail_ci_if_error: false
+
+  lint-dockerfile:
+    name: Lint Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Hadolint
+      uses: hadolint/hadolint-action@v3.1.0
+      with:
+        dockerfile: Dockerfile
+
+  all-checks-passed:
+    name: All CI checks passed
+    needs: [build-and-test, lint-dockerfile]
+    runs-on: ubuntu-latest
+    steps:
+    - name: CI Success
+      run: echo "All CI checks passed successfully!"

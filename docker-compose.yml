@@ -1,0 +1,134 @@
+version: '3.8'
+
+services:
+  # Python 3.11 development environment
+  py311:
+    build:
+      context: .
+      target: development
+      args:
+        PYTHON_VERSION: "3.11"
+    image: cad-datamodel:py3.11-dev
+    container_name: cad-datamodel-py311
+    volumes:
+      - .:/app
+      - py311-cache:/root/.cache
+    environment:
+      - PYTHONPATH=/app
+      - PYTHON_VERSION=3.11
+    working_dir: /app
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+
+  # Python 3.12 development environment
+  py312:
+    build:
+      context: .
+      target: development
+      args:
+        PYTHON_VERSION: "3.12"
+    image: cad-datamodel:py3.12-dev
+    container_name: cad-datamodel-py312
+    volumes:
+      - .:/app
+      - py312-cache:/root/.cache
+    environment:
+      - PYTHONPATH=/app
+      - PYTHON_VERSION=3.12
+    working_dir: /app
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+
+  # CI environment for Python 3.11
+  ci-py311:
+    build:
+      context: .
+      target: ci
+      args:
+        PYTHON_VERSION: "3.11"
+    image: cad-datamodel:py3.11-ci
+    container_name: cad-datamodel-ci-py311
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+      - CI=true
+    working_dir: /app
+
+  # CI environment for Python 3.12
+  ci-py312:
+    build:
+      context: .
+      target: ci
+      args:
+        PYTHON_VERSION: "3.12"
+    image: cad-datamodel:py3.12-ci
+    container_name: cad-datamodel-ci-py312
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+      - CI=true
+    working_dir: /app
+
+  # Test runner for Python 3.11
+  test-py311:
+    build:
+      context: .
+      target: test
+      args:
+        PYTHON_VERSION: "3.11"
+    image: cad-datamodel:py3.11-test
+    container_name: cad-datamodel-test-py311
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+    working_dir: /app
+
+  # Test runner for Python 3.12
+  test-py312:
+    build:
+      context: .
+      target: test
+      args:
+        PYTHON_VERSION: "3.12"
+    image: cad-datamodel:py3.12-test
+    container_name: cad-datamodel-test-py312
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+    working_dir: /app
+
+  # Linting service
+  lint:
+    build:
+      context: .
+      target: lint
+      args:
+        PYTHON_VERSION: "3.12"
+    image: cad-datamodel:lint
+    container_name: cad-datamodel-lint
+    volumes:
+      - .:/app
+    working_dir: /app
+
+  # Type checking service
+  typecheck:
+    build:
+      context: .
+      target: typecheck
+      args:
+        PYTHON_VERSION: "3.12"
+    image: cad-datamodel:typecheck
+    container_name: cad-datamodel-typecheck
+    volumes:
+      - .:/app
+    working_dir: /app
+
+volumes:
+  py311-cache:
+  py312-cache:
