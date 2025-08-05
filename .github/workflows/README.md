@@ -37,14 +37,14 @@ To test the CI pipeline locally:
 pip install -e ".[dev]"
 
 # Run linting
-ruff check src tests
-ruff format --check src tests
+ruff check cad_datamodel tests
+ruff format --check cad_datamodel tests
 
 # Run type checking
-mypy src/cad_datamodel --strict
+mypy cad_datamodel --strict
 
 # Run tests with coverage
-pytest tests/unit -v --cov=src/cad_datamodel --cov-report=term-missing
+pytest tests/unit -v --cov=cad_datamodel --cov-report=term-missing
 
 # Build package
 python -m build

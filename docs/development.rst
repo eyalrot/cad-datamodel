@@ -52,8 +52,8 @@ Making Changes
 
 4. Check code quality::
 
-    ruff check src tests
-    mypy src/cad_datamodel --strict
+    ruff check cad_datamodel tests
+    mypy cad_datamodel --strict
 
 5. Commit with a descriptive message::
 
@@ -84,7 +84,7 @@ Run all tests::
 
 Run with coverage::
 
-    pytest --cov=src/cad_datamodel --cov-report=term-missing
+    pytest --cov=cad_datamodel --cov-report=term-missing
 
 Run specific test module::
 
@@ -121,20 +121,20 @@ Linting
 We use Ruff for linting and formatting::
 
     # Check for issues
-    ruff check src tests
+    ruff check cad_datamodel tests
 
     # Auto-fix issues
-    ruff check --fix src tests
+    ruff check --fix cad_datamodel tests
 
     # Format code
-    ruff format src tests
+    ruff format cad_datamodel tests
 
 Type Checking
 ~~~~~~~~~~~~~
 
 We use mypy in strict mode::
 
-    mypy src/cad_datamodel --strict
+    mypy cad_datamodel --strict
 
 All public APIs must have type annotations.
 

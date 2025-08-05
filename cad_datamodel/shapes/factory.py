@@ -14,7 +14,7 @@ from cad_datamodel.shapes.shape import IShape, Shape, Style
 
 class ShapeFactory:
     """Factory class for creating shapes.
-    
+
     The ShapeFactory provides methods to create shapes by type,
     ensuring consistent creation and validation across the system.
     """
@@ -27,7 +27,7 @@ class ShapeFactory:
     @classmethod
     def register_shape(cls, shape_type: ShapeType, shape_class: type[Shape]) -> None:
         """Register a new shape type with the factory.
-        
+
         Args:
             shape_type: The ShapeType enum value
             shape_class: The class that implements this shape type
@@ -36,21 +36,18 @@ class ShapeFactory:
 
     @classmethod
     def create_shape(
-        cls,
-        shape_type: ShapeType,
-        layer_id: str,
-        **kwargs: Any
+        cls, shape_type: ShapeType, layer_id: str, **kwargs: Any
     ) -> IShape:
         """Create a shape of the specified type.
-        
+
         Args:
             shape_type: The type of shape to create
             layer_id: ID of the layer containing this shape
             **kwargs: Shape-specific parameters
-            
+
         Returns:
             The created shape instance
-            
+
         Raises:
             ShapeValidationError: If the shape type is not supported
                                 or if shape creation fails
@@ -59,7 +56,7 @@ class ShapeFactory:
             raise ShapeValidationError(
                 shape_type.name,
                 f"Unsupported shape type: {shape_type.name}",
-                kwargs.get("shape_id")
+                kwargs.get("shape_id"),
             )
 
         shape_class = cls._shape_registry[shape_type]
@@ -72,7 +69,7 @@ class ShapeFactory:
             raise ShapeValidationError(
                 shape_type.name,
                 f"Invalid parameters for {shape_type.name}: {e}",
-                kwargs.get("shape_id")
+                kwargs.get("shape_id"),
             ) from e
 
     @classmethod
@@ -94,7 +91,7 @@ class ShapeFactory:
         shape_id: Optional[str] = None,
     ) -> Rectangle:
         """Convenience method to create a rectangle.
-        
+
         Args:
             x: X coordinate of the top-left corner
             y: Y coordinate of the top-left corner
@@ -109,7 +106,7 @@ class ShapeFactory:
             transform: Transformation matrix
             metadata: Additional user-defined metadata
             shape_id: Optional explicit ID (auto-generated if not provided)
-            
+
         Returns:
             The created Rectangle instance
         """
@@ -132,13 +129,13 @@ class ShapeFactory:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> IShape:
         """Create a shape from a dictionary representation.
-        
+
         Args:
             data: Dictionary containing shape data
-            
+
         Returns:
             The created shape instance
-            
+
         Raises:
             ShapeValidationError: If the shape type is invalid or
                                 data is malformed
@@ -148,16 +145,14 @@ class ShapeFactory:
             shape_type = ShapeType[shape_type_str]
         except (KeyError, ValueError) as e:
             raise ShapeValidationError(
-                "Unknown",
-                f"Invalid or missing shape type: {e}",
-                data.get("id")
+                "Unknown", f"Invalid or missing shape type: {e}", data.get("id")
             ) from e
 
         if shape_type not in cls._shape_registry:
             raise ShapeValidationError(
                 shape_type.name,
                 f"Unsupported shape type: {shape_type.name}",
-                data.get("id")
+                data.get("id"),
             )
 
         shape_class = cls._shape_registry[shape_type]
@@ -166,7 +161,7 @@ class ShapeFactory:
     @classmethod
     def get_supported_types(cls) -> list[ShapeType]:
         """Get a list of all supported shape types.
-        
+
         Returns:
             List of ShapeType enums that are currently supported
         """

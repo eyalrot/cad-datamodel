@@ -8,8 +8,8 @@ Thank you for your interest in contributing to the CAD Datamodel project!
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
 4. Run tests (`pytest`)
-5. Run type checking (`mypy src/cad_datamodel`)
-6. Run linting (`ruff check src tests`)
+5. Run type checking (`mypy cad_datamodel`)
+6. Run linting (`ruff check cad_datamodel tests`)
 7. Commit your changes (`git commit -m 'Add amazing feature'`)
 8. Push to the branch (`git push origin feature/amazing-feature`)
 9. Open a Pull Request

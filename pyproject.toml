@@ -62,7 +62,7 @@ Issues = "https://github.com/cad-datamodel/cad-datamodel/issues"
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "/src",
+    "/cad_datamodel",
     "/tests",
     "/docs",
     "README.md",
@@ -72,4 +72,4 @@ include = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/cad_datamodel"]
+packages = ["cad_datamodel"]

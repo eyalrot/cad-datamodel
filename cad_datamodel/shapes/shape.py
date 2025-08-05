@@ -16,7 +16,7 @@ from cad_datamodel.core.types import Bounds, ShapeType, Transform
 
 class Style(BaseModel):
     """Visual styling properties for shapes.
-    
+
     This is a placeholder until the full styles module is implemented.
     """
 
@@ -29,7 +29,7 @@ class Style(BaseModel):
 
 class IShape(ABC):
     """Abstract base class for all shape types in the CAD system.
-    
+
     This interface defines the contract that all shapes must follow,
     ensuring consistent behavior across different shape types.
     """
@@ -49,7 +49,7 @@ class IShape(ABC):
     @abstractmethod
     def get_bounds(self) -> Bounds:
         """Calculate the axis-aligned bounding box of the shape.
-        
+
         Returns:
             Bounds object representing the shape's bounding box
         """
@@ -58,7 +58,7 @@ class IShape(ABC):
     @abstractmethod
     def to_dict(self) -> dict[str, Any]:
         """Serialize the shape to a dictionary.
-        
+
         Returns:
             Dictionary representation of the shape
         """
@@ -68,13 +68,13 @@ class IShape(ABC):
     @abstractmethod
     def from_dict(cls, data: dict[str, Any]) -> "IShape":
         """Deserialize a shape from a dictionary.
-        
+
         Args:
             data: Dictionary containing shape data
-            
+
         Returns:
             Shape instance
-            
+
         Raises:
             ShapeValidationError: If the data is invalid
         """
@@ -83,7 +83,7 @@ class IShape(ABC):
 
 class Shape(IShape):
     """Base implementation of a shape with common attributes.
-    
+
     This class provides the foundation for all concrete shape types,
     implementing common functionality and enforcing immutability.
     """
@@ -102,7 +102,7 @@ class Shape(IShape):
         shape_id: Optional[str] = None,
     ):
         """Initialize a shape with common attributes.
-        
+
         Args:
             shape_type: The type of shape being created
             layer_id: ID of the layer containing this shape
@@ -127,9 +127,7 @@ class Shape(IShape):
         # Validate layer_id is not empty
         if not layer_id:
             raise ShapeValidationError(
-                shape_type.name,
-                "layer_id cannot be empty",
-                self._id
+                shape_type.name, "layer_id cannot be empty", self._id
             )
 
     @property
@@ -179,13 +177,13 @@ class Shape(IShape):
 
     def apply_transform(self, transform: Transform) -> "Shape":
         """Apply a transformation to create a new transformed shape.
-        
+
         This method must be overridden by concrete shape classes to
         handle shape-specific transformation logic.
-        
+
         Args:
             transform: The transformation to apply
-            
+
         Returns:
             New shape instance with applied transformation
         """
@@ -193,7 +191,7 @@ class Shape(IShape):
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize the shape to a dictionary.
-        
+
         Returns:
             Dictionary representation of the shape
         """
@@ -212,7 +210,7 @@ class Shape(IShape):
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "Shape":
         """Base deserialization method.
-        
+
         This should be overridden by concrete shape classes.
         """
         raise NotImplementedError("Concrete shapes must implement from_dict")

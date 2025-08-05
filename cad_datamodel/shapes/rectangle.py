@@ -15,7 +15,7 @@ from cad_datamodel.shapes.shape import Shape, Style
 
 class Rectangle(Shape):
     """A rectangular shape with optional rounded corners.
-    
+
     Rectangles are defined by their top-left corner position (x, y),
     dimensions (width, height), and optional corner radius.
     """
@@ -38,7 +38,7 @@ class Rectangle(Shape):
         shape_id: Optional[str] = None,
     ):
         """Initialize a rectangle shape.
-        
+
         Args:
             x: X-coordinate of top-left corner
             y: Y-coordinate of top-left corner
@@ -53,30 +53,26 @@ class Rectangle(Shape):
             transform: Transformation matrix
             metadata: Additional user-defined metadata
             shape_id: Optional explicit ID (auto-generated if not provided)
-            
+
         Raises:
             ShapeValidationError: If parameters are invalid
         """
         # Validate rectangle-specific parameters
         if width <= 0:
             raise ShapeValidationError(
-                "RECTANGLE",
-                f"Width must be positive, got {width}",
-                shape_id
+                "RECTANGLE", f"Width must be positive, got {width}", shape_id
             )
 
         if height <= 0:
             raise ShapeValidationError(
-                "RECTANGLE",
-                f"Height must be positive, got {height}",
-                shape_id
+                "RECTANGLE", f"Height must be positive, got {height}", shape_id
             )
 
         if corner_radius < 0:
             raise ShapeValidationError(
                 "RECTANGLE",
                 f"Corner radius cannot be negative, got {corner_radius}",
-                shape_id
+                shape_id,
             )
 
         # Validate corner radius doesn't exceed half of the smallest dimension
@@ -85,7 +81,7 @@ class Rectangle(Shape):
             raise ShapeValidationError(
                 "RECTANGLE",
                 f"Corner radius {corner_radius} exceeds maximum allowed {max_radius}",
-                shape_id
+                shape_id,
             )
 
         # Initialize base shape
@@ -135,10 +131,10 @@ class Rectangle(Shape):
 
     def get_bounds(self) -> Bounds:
         """Calculate the axis-aligned bounding box of the rectangle.
-        
+
         Takes into account the transformation matrix to compute
         the bounds of the transformed rectangle.
-        
+
         Returns:
             Bounds object representing the rectangle's bounding box
         """
@@ -166,10 +162,10 @@ class Rectangle(Shape):
 
     def apply_transform(self, transform: Transform) -> "Rectangle":
         """Apply a transformation to create a new transformed rectangle.
-        
+
         Args:
             transform: The transformation to apply
-            
+
         Returns:
             New Rectangle instance with composed transformation
         """
@@ -193,30 +189,32 @@ class Rectangle(Shape):
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize the rectangle to a dictionary.
-        
+
         Returns:
             Dictionary representation of the rectangle
         """
         data = super().to_dict()
-        data.update({
-            "x": self._x,
-            "y": self._y,
-            "width": self._width,
-            "height": self._height,
-            "corner_radius": self._corner_radius,
-        })
+        data.update(
+            {
+                "x": self._x,
+                "y": self._y,
+                "width": self._width,
+                "height": self._height,
+                "corner_radius": self._corner_radius,
+            }
+        )
         return data
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "Rectangle":
         """Deserialize a rectangle from a dictionary.
-        
+
         Args:
             data: Dictionary containing rectangle data
-            
+
         Returns:
             Rectangle instance
-            
+
         Raises:
             ShapeValidationError: If the data is invalid
         """
@@ -229,9 +227,7 @@ class Rectangle(Shape):
             corner_radius = float(data.get("corner_radius", 0.0))
         except (KeyError, ValueError, TypeError) as e:
             raise ShapeValidationError(
-                "RECTANGLE",
-                f"Invalid rectangle data: {e}",
-                data.get("id")
+                "RECTANGLE", f"Invalid rectangle data: {e}", data.get("id")
             ) from e
 
         # Extract common shape attributes
@@ -273,4 +269,3 @@ class Rectangle(Shape):
             f"width={self._width}, height={self._height}, "
             f"corner_radius={self._corner_radius})"
         )
-

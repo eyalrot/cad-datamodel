@@ -63,10 +63,10 @@ test-file:
 
 # Coverage targets
 coverage:
-	python3 -m pytest tests/ --cov=src/cad_datamodel --cov-report=term-missing
+	python3 -m pytest tests/ --cov=cad_datamodel --cov-report=term-missing
 
 coverage-html:
-	python3 -m pytest tests/ --cov=src/cad_datamodel --cov-report=html --cov-report=term
+	python3 -m pytest tests/ --cov=cad_datamodel --cov-report=html --cov-report=term
 	@echo "Coverage report generated in htmlcov/index.html"
 
 coverage-report: coverage-html
@@ -74,16 +74,16 @@ coverage-report: coverage-html
 
 # Code quality targets
 lint:
-	python3 -m ruff check src/ tests/
+	python3 -m ruff check cad_datamodel/ tests/
 
 lint-fix:
-	python3 -m ruff check --fix src/ tests/
+	python3 -m ruff check --fix cad_datamodel/ tests/
 
 type-check:
-	python3 -m mypy src/cad_datamodel
+	python3 -m mypy cad_datamodel
 
 format:
-	python3 -m ruff format src/ tests/
+	python3 -m ruff format cad_datamodel/ tests/
 
 # Pre-commit targets
 pre-commit: lint type-check test

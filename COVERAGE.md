@@ -102,13 +102,13 @@ To generate coverage reports:
 
 ```bash
 # Terminal report
-pytest tests/unit/test_core.py --cov=src/cad_datamodel --cov-report=term-missing
+pytest tests/unit/test_core.py --cov=cad_datamodel --cov-report=term-missing
 
 # HTML report
-pytest tests/unit/test_core.py --cov=src/cad_datamodel --cov-report=html
+pytest tests/unit/test_core.py --cov=cad_datamodel --cov-report=html
 
 # XML report (for CI integration)
-pytest tests/unit/test_core.py --cov=src/cad_datamodel --cov-report=xml
+pytest tests/unit/test_core.py --cov=cad_datamodel --cov-report=xml
 ```
 
 ## Coverage Goals

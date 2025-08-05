@@ -99,7 +99,7 @@ transformed = transform.apply_to_point(original)
 pytest
 
 # Run with coverage
-pytest --cov=src/cad_datamodel --cov-report=term-missing
+pytest --cov=cad_datamodel --cov-report=term-missing
 
 # Run specific test file
 pytest tests/unit/test_core.py
@@ -112,19 +112,19 @@ pytest -v
 
 ```bash
 # Type checking
-mypy src/cad_datamodel --strict
+mypy cad_datamodel --strict
 
 # Linting
-ruff check src tests
+ruff check cad_datamodel tests
 
 # Format checking
-ruff format --check src tests
+ruff format --check cad_datamodel tests
 
 # Auto-fix linting issues
-ruff check --fix src tests
+ruff check --fix cad_datamodel tests
 
 # Auto-format code
-ruff format src tests
+ruff format cad_datamodel tests
 ```
 
 ### Building Documentation
@@ -148,10 +148,10 @@ The project maintains high test coverage (92%) with a comprehensive test suite:
 
 ```bash
 # Run tests with coverage report
-pytest --cov=src/cad_datamodel --cov-report=term-missing
+pytest --cov=cad_datamodel --cov-report=term-missing
 
 # Generate HTML coverage report
-pytest --cov=src/cad_datamodel --cov-report=html
+pytest --cov=cad_datamodel --cov-report=html
 
 # View coverage report
 open htmlcov/index.html  # macOS
@@ -172,7 +172,7 @@ See [COVERAGE.md](COVERAGE.md) for detailed coverage information.
 
 ```
 cad-datamodel/
-├── src/cad_datamodel/     # Source code
+├── cad_datamodel/         # Source code
 │   ├── core/              # Base classes and interfaces
 │   ├── shapes/            # Shape implementations
 │   ├── layers/            # Layer management
