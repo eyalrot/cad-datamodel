@@ -2,13 +2,11 @@
 
 import xml.etree.ElementTree as ET
 
-import pytest
-
+from cad_datamodel.core.types import Transform
 from cad_datamodel.document import Document
 from cad_datamodel.persistence.svg import SVGExporter
 from cad_datamodel.shapes.circle import Circle
 from cad_datamodel.shapes.shape import Style
-from cad_datamodel.core.types import Transform
 
 
 class TestCircleSVGExport:
@@ -109,13 +107,13 @@ class TestCircleSVGExport:
     def test_multiple_circles_export(self):
         """Test exporting multiple circles."""
         doc = Document()
-        
+
         circles = [
             Circle(cx=50, cy=50, radius=25, layer_id="layer1"),
             Circle(cx=150, cy=150, radius=50, layer_id="layer1"),
             Circle(cx=250, cy=250, radius=75, layer_id="layer2"),
         ]
-        
+
         for circle in circles:
             doc.add_shape(circle)
 
@@ -127,13 +125,13 @@ class TestCircleSVGExport:
         circle_elems = root.findall(".//svg:circle", ns)
 
         assert len(circle_elems) == 3
-        
+
         # Check each circle
         assert circle_elems[0].get("cx") == "50"
         assert circle_elems[0].get("r") == "25"
-        
+
         assert circle_elems[1].get("cx") == "150"
         assert circle_elems[1].get("r") == "50"
-        
+
         assert circle_elems[2].get("cx") == "250"
         assert circle_elems[2].get("r") == "75"

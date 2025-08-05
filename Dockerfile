@@ -5,10 +5,10 @@
 ARG PYTHON_VERSION=3.12
 
 # Base stage with Python
-FROM python:${PYTHON_VERSION}-slim as base
+FROM python:${PYTHON_VERSION}-slim AS base
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     git \
     && rm -rf /var/lib/apt/lists/*
@@ -20,17 +20,16 @@ WORKDIR /app
 COPY requirements.txt requirements-dev.txt pyproject.toml setup.py setup.cfg ./
 
 # Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
+RUN pip install --no-cache-dir --upgrade pip==24.2 && \
     pip install --no-cache-dir -e ".[dev]" && \
     pip install --no-cache-dir -r requirements-dev.txt
 
 # Development stage
-FROM base as development
+FROM base AS development
 
 # Copy source code
 COPY cad_datamodel/ ./cad_datamodel/
 COPY tests/ ./tests/
-COPY examples/ ./examples/
 COPY docs/ ./docs/
 
 # Copy configuration files
@@ -44,7 +43,7 @@ RUN mkdir -p htmlcov
 CMD ["/bin/bash"]
 
 # CI stage for running tests
-FROM development as ci
+FROM development AS ci
 
 # Set environment variables for CI
 ENV CI=true
@@ -55,19 +54,19 @@ ENV PYTHONUNBUFFERED=1
 CMD ["make", "ci"]
 
 # Test stage
-FROM development as test
+FROM development AS test
 
 # Run tests by default
 CMD ["python", "-m", "pytest", "tests/", "-v", "--cov=cad_datamodel", "--cov-report=term-missing", "--cov-report=xml"]
 
 # Lint stage
-FROM development as lint
+FROM development AS lint
 
 # Run linting by default
 CMD ["python", "-m", "ruff", "check", "cad_datamodel/", "tests/"]
 
 # Type check stage
-FROM development as typecheck
+FROM development AS typecheck
 
 # Run type checking by default
 CMD ["python", "-m", "mypy", "cad_datamodel"]

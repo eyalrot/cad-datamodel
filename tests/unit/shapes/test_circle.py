@@ -1,10 +1,9 @@
 """Unit tests for the Circle shape implementation."""
 
-import numpy as np
 import pytest
 
 from cad_datamodel.core.exceptions import ShapeValidationError
-from cad_datamodel.core.types import Bounds, Point, ShapeType, Transform
+from cad_datamodel.core.types import ShapeType, Transform
 from cad_datamodel.shapes.circle import Circle
 from cad_datamodel.shapes.shape import Style
 
@@ -131,15 +130,15 @@ class TestCircle:
         """Test applying a transform to a circle."""
         original = Circle(cx=50, cy=50, radius=25, layer_id="layer1")
         transform = Transform.translation(20, 30)
-        
+
         transformed = original.apply_transform(transform)
-        
+
         # Original should be unchanged
         assert original.cx == 50
         assert original.cy == 50
         assert original.radius == 25
         assert original.transform == Transform.identity()
-        
+
         # Transformed should have new transform but same geometry
         assert transformed.cx == 50
         assert transformed.cy == 50
@@ -151,7 +150,7 @@ class TestCircle:
         """Test to_dict and from_dict methods."""
         style = Style(fill_color="#FF0000", stroke_color="#000000")
         transform = Transform.rotation(45)
-        
+
         original = Circle(
             cx=100,
             cy=200,
@@ -168,7 +167,7 @@ class TestCircle:
 
         # Serialize to dict
         data = original.to_dict()
-        
+
         # Check all fields are present
         assert data["cx"] == 100
         assert data["cy"] == 200
@@ -185,7 +184,7 @@ class TestCircle:
 
         # Deserialize from dict
         restored = Circle.from_dict(data)
-        
+
         assert restored.cx == original.cx
         assert restored.cy == original.cy
         assert restored.radius == original.radius
@@ -214,7 +213,7 @@ class TestCircle:
             cx=50, cy=50, radius=25, layer_id="layer1", shape_id="test-id"
         )
         repr_str = repr(circle)
-        
+
         assert "Circle" in repr_str
         assert "id=test-id" in repr_str
         assert "cx=50" in repr_str
@@ -233,11 +232,11 @@ class TestCircle:
     def test_circle_various_valid_parameters(self, cx, cy, radius):
         """Test circle creation with various valid parameter combinations."""
         circle = Circle(cx=cx, cy=cy, radius=radius, layer_id="layer1")
-        
+
         assert circle.cx == cx
         assert circle.cy == cy
         assert circle.radius == radius
-        
+
         # Verify bounds are calculated correctly
         bounds = circle.get_bounds()
         assert bounds.min_point.x == pytest.approx(cx - radius)

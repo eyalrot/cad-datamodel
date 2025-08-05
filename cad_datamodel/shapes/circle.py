@@ -105,7 +105,7 @@ class Circle(Shape):
         # We'll check 4 cardinal points on the circle
         angles = [0, np.pi/2, np.pi, 3*np.pi/2]
         points = []
-        
+
         for angle in angles:
             # Point on circle circumference
             x = self._cx + self._radius * np.cos(angle)
@@ -114,19 +114,19 @@ class Circle(Shape):
             # Apply transformation
             transformed = self._transform.apply_to_point(point)
             points.append(transformed)
-        
+
         # Also include the center point for completeness
         center = Point(self._cx, self._cy)
         transformed_center = self._transform.apply_to_point(center)
         points.append(transformed_center)
-        
+
         # Find min and max coordinates
         x_coords = [p.x for p in points]
         y_coords = [p.y for p in points]
-        
+
         min_point = Point(min(x_coords), min(y_coords))
         max_point = Point(max(x_coords), max(y_coords))
-        
+
         return Bounds(min_point, max_point)
 
     def apply_transform(self, transform: Transform) -> "Circle":
